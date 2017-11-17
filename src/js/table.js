@@ -1,18 +1,31 @@
+var dollarValue = function(d) { return "$" + d3.format(",.0f")(d); }
+// var dollarValue = function(d) { return (d); }
+function compare(a,b) {
+  if (a.average > b.average)
+    return -1;
+  if (a.average < b.average)
+    return 1;
+  return 0;
+}
+
 /** Class implementing the table. */
 class Table {
 	/**
 	 * Creates a Table Object
 	 */
 
-	constructor(columns, barchart) {
+	constructor(data, barchart) {
 		// console.log(teamData);
 
-		this.columns = columns;
-		console.log(columns);
+		this.data = data;
+
+		
+		this.columns = Object.keys(data[0]);
+		// console.log(columns);
 
 		this.barchart = barchart;
 
-		this.barchart.createBarChart("DeveloperType");
+		this.updateVisualizations("DeveloperType");
 
 		this.width = 150;
 		this.height = 20;
@@ -24,6 +37,8 @@ class Table {
 			bottom: 5
 		}
 
+
+
 		let tablebody = d3.select("#QuestionsTable").select("tbody");
 
 		let tr = tablebody.selectAll('tr').data(this.columns);
@@ -32,7 +47,7 @@ class Table {
 
 		tr = trenter.merge(tr);
 
-		tr.on("click", (d, i)=> this.barchart.createBarChart(d));
+		tr.on("click", (d, i)=> this.updateVisualizations(d));
 
 		let td = tr.selectAll("td").data(function(d){
 			let array = [];
@@ -45,6 +60,45 @@ class Table {
 		td = tdenter.merge(td);
 
 		td.text(d=>d);
+
+	}
+
+	updateVisualizations(column){
+		let map = {};
+
+		this.data.forEach(function(d, i){
+			d[column].split("; ").forEach(function(type){
+				if(type in map){
+					map[type].total = map[type].total + Number(d.Salary);
+					map[type].count = map[type].count + 1;
+					// console.log(number(d.Salary))
+				}else{
+					map[type] = {};
+					map[type].name = type;
+					map[type].total = parseInt(d.Salary);
+					map[type].count = 1;
+				}
+			})
+		})
+		let maxAverage = -1;
+
+		let array = [];
+		for (var key in map) {
+		// skip loop if the property is from prototype
+			if (!map.hasOwnProperty(key)) continue;
+
+			var obj = map[key];
+			obj.average = obj.total/obj.count;
+			array.push(obj);
+			if(obj.average  > maxAverage){
+				maxAverage = obj.average ;
+			} 
+			
+		}
+
+		array.sort(compare);
+
+		this.barchart.createBarChart(array, maxAverage);
 
 	}
 

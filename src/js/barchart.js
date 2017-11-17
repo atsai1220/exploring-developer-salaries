@@ -3,10 +3,7 @@ class BarChart {
 	/**
 	 * Creates a Tree Object
 	 */
-	constructor(data) {
-		this.data = data;
-		console.log(data);
-		
+	constructor() {
 	}
 
 	/**
@@ -14,12 +11,9 @@ class BarChart {
 	 *
 	 * @param treeData an array of objects that contain parent/child information.
 	 */
-	createBarChart(column) {
-
+	createBarChart(array, maxAverage) {
 		d3.select("#bars").selectAll("g").remove();
-
-		let data = this.data;
-		console.log(data);
+		
 		let margin = {top: 10, right: 10, bottom: 10, left: 10};
 		let width = 1000 - margin.left - margin.right;
 		let height = 500 - margin.top - margin.bottom;
@@ -33,39 +27,7 @@ class BarChart {
 			.attr("height", height + margin.top + margin.bottom);
 
 
-		let map = {};
 
-		data.forEach(function(d, i){
-			d[column].split("; ").forEach(function(type){
-				if(type in map){
-					map[type].total = map[type].total + Number(d.Salary);
-					map[type].count = map[type].count + 1;
-					// console.log(number(d.Salary))
-				}else{
-					map[type] = {};
-					map[type].name = type;
-					map[type].total = parseInt(d.Salary);
-					map[type].count = 1;
-				}
-			})
-		})
-		let maxAverage = -1;
-
-		let array = [];
-		for (var key in map) {
-		// skip loop if the property is from prototype
-			if (!map.hasOwnProperty(key)) continue;
-
-			var obj = map[key];
-			obj.average = obj.total/obj.count;
-			array.push(obj);
-			if(obj.average  > maxAverage){
-				maxAverage = obj.average ;
-			} 
-			
-		}
-
-		array.sort(compare);
 
 
 		var xscale = d3.scaleLinear()

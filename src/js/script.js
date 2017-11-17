@@ -4,16 +4,6 @@
  *
  */
 
-var dollarValue = function(d) { return "$" + d3.format(",.0f")(d); }
-// var dollarValue = function(d) { return (d); }
-function compare(a,b) {
-  if (a.average > b.average)
-    return -1;
-  if (a.average < b.average)
-    return 1;
-  return 0;
-}
-
 d3.csv("data/survey_results_public.csv", function (error, csvData) {
 
 	let data = [];
@@ -25,8 +15,8 @@ d3.csv("data/survey_results_public.csv", function (error, csvData) {
 	}
 
 
-	let barchart = new BarChart(data);
+	let barchart = new BarChart();
 
-	let table = new Table(Object.keys(data[0]), barchart);
+	let table = new Table(data, barchart);
 
 });
