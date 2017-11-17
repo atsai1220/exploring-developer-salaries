@@ -1,3 +1,9 @@
+
+
+function dollarValue(d) {
+	return "$" + d3.format(",.0f")(d);
+}
+
 /** Class implementing the tree view. */
 class BarChart {
 	/**
@@ -13,7 +19,7 @@ class BarChart {
 	 */
 	createBarChart(array, maxAverage) {
 		d3.select("#bars").selectAll("g").remove();
-		
+
 		let margin = {top: 10, right: 10, bottom: 10, left: 10};
 		let width = 1000 - margin.left - margin.right;
 		let height = 500 - margin.top - margin.bottom;
@@ -65,12 +71,13 @@ class BarChart {
 			.enter()
 			.append("text")
 			.attr('x', d=> xscale(d.average))
-			.attr('dx', -80)
+			.attr('dx', -50)
 			.attr('y', function(d, i){
 				return yscale(d.name); 
 			})
-			.attr('dy', yscale.bandwidth()/2)
+			.attr('dy', yscale.bandwidth() - 2)
 			.style('fill', 'white')
+			.style("font-size",12)
 			.text(function(d){
 				return dollarValue(d.average);
 			});

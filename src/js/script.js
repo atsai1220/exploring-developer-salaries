@@ -14,7 +14,6 @@ d3.csv("data/survey_results_public.csv", function (error, csvData) {
 		}
 	}
 
-
 	let barchart = new BarChart();
 
 	let table = new Table(data, barchart);
