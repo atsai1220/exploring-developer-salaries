@@ -5,12 +5,12 @@ table {
     /*width: 720px;*/
 }
 
-th {
+/*th {
     font-weight: normal;
     
     padding-right: 6px;
     min-width: 125px;
-}
+}*/
 
 thead td , th{
     cursor: s-resize;
@@ -39,9 +39,9 @@ tbody td {
     color:black
 }
 
-tbody tr:hover {
+/*tbody tr:hover {
     background-color: #dbdbdb;
-}
+}*/
 
 tbody tr .game {
     background-color: #f0f0f0;
@@ -127,6 +127,7 @@ header {
 
 .selected {
     stroke: #be2714;
+    background-color: #be2714;
     stroke-width: 4px;
 }
 

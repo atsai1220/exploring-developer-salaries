@@ -25,7 +25,9 @@ class Table {
 
 		this.barchart = barchart;
 
-		this.updateVisualizations("DeveloperType");
+		this.initialSelected = "DeveloperType";
+
+		this.questionSelected(this.initialSelected);
 
 		this.width = 150;
 		this.height = 20;
@@ -38,6 +40,7 @@ class Table {
 		}
 
 
+		var parent = this;
 
 		let tablebody = d3.select("#QuestionsTable").select("tbody");
 
@@ -47,7 +50,16 @@ class Table {
 
 		tr = trenter.merge(tr);
 
-		tr.on("click", (d, i)=> this.updateVisualizations(d));
+		tr.filter(function(d){
+			console.log(d);
+			return d === parent.initialSelected;
+		}).classed("selected", true);
+
+		tr.on("click", function(d, i){
+			d3.selectAll(".selected").classed("selected", false);
+			d3.select(this).classed("selected", true);
+			parent.questionSelected(d);
+		});
 
 		let td = tr.selectAll("td").data(function(d){
 			let array = [];
@@ -63,7 +75,7 @@ class Table {
 
 	}
 
-	updateVisualizations(column){
+	questionSelected(column){
 		let map = {};
 
 		let totalCount = 0;
@@ -106,9 +118,108 @@ class Table {
 
 		array.sort(compare);
 
-		this.barchart.createBarChart(array, maxAverage);
+		this.columnsToDisplay = [];
+
+		for(let i = 0; i < 35 && i < array.length; i++){
+			this.columnsToDisplay.push(array[i].name);
+		}
+
+		let tablebody = d3.select("#Responses").select("tbody");
+
+		let tr = tablebody.selectAll('tr').data(array);
+		tr.exit().remove();
+
+		let trenter = tr.enter().append("tr");
+
+		tr = trenter.merge(tr);
+
+
+
+		var parent = this;
+		tr.on("click", function(d, i){
+			// d3.selectAll(".selected").classed("selected", false);
+			let cur = d3.select(this);
+			if(cur.classed("selected")){
+				cur.classed("selected", false);
+				parent.responseDeselected(d.name);
+			}else{
+				cur.classed("selected", true);
+				parent.responseSelected(d.name);
+			}
+			
+		});
+
+		tr.filter(function(d){
+			return parent.columnsToDisplay.indexOf(d.name) >=0;
+		}).classed('selected', true);
+
+		let td = tr.selectAll("td").data(function(d){
+			let array = [];
+			// console.log(d);
+			array.push(d.name);
+			return array;
+		});
+
+		let tdenter = td.enter().append("td");
+
+		td = tdenter.merge(td);
+
+		td.text(d=>d);
+
+		this.responseArray = array;
+		this.maxAverage = maxAverage;
+
+		this.updateVisualizations();
+	}
+
+
+	responseSelected(response){
+		this.columnsToDisplay.push(response);
+		this.updateVisualizations();
+	}
+
+	responseDeselected(response){
+		this.columnsToDisplay.splice(this.columnsToDisplay.indexOf(response), 1);
+		this.updateVisualizations();
+	}
+
+	updateVisualizations(){
+		
+		let array = [];
+
+		let parent = this;
+
+		this.responseArray.forEach(function(d, i){
+			if(parent.columnsToDisplay.indexOf(d.name) >=0){
+				array.push(d);
+			}
+		})
+		this.barchart.createBarChart(array, this.maxAverage);
 
 	}
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
