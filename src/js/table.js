@@ -205,9 +205,9 @@ class Table {
 			multiYearArray.push({'year': i, 'data': array});
 		}
 
-		this.linechart.createLineChart(multiYearArray, "average");
+		this.linechart.createLineChart(multiYearArray, "average", "Average Salary");
 
-		this.percentageLinechart.createLineChart(multiYearArray, "fractionOfTotal")
+		this.percentageLinechart.createLineChart(multiYearArray, "fractionOfTotal", "Percent of Respondants")
 
 	}
 
