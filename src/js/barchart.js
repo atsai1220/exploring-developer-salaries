@@ -21,8 +21,8 @@ class BarChart {
 		d3.select("#bars").selectAll("g").remove();
 
 		let margin = {top: 10, right: 10, bottom: 10, left: 10};
-		let width = 1000 - margin.left - margin.right;
-		let height = 500 - margin.top - margin.bottom;
+		let width = 400 - margin.left - margin.right;
+		let height = 300 - margin.top - margin.bottom;
 		let spaceForTitles = 300;
 
 		// append the svg object to the body of the page

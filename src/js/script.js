@@ -1,4 +1,3 @@
-
 /**
  * Loads in the tree information from fifa-tree.csv and calls createTree(csvData) to render the tree.
  *
@@ -16,6 +15,10 @@ d3.csv("data/survey_results_public.csv", function (error, csvData) {
 
 	let barchart = new BarChart();
 
-	let table = new Table(data, barchart);
+	let linechart = new LineChart("#salary");
+
+	let percentageLinechart = new LineChart("#percentage");
+
+	let table = new Table(data, barchart, linechart, percentageLinechart);
 
 });

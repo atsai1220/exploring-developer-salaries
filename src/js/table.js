@@ -14,7 +14,7 @@ class Table {
 	 * Creates a Table Object
 	 */
 
-	constructor(data, barchart) {
+	constructor(data, barchart, linechart, percentageLinechart) {
 		// console.log(teamData);
 
 		this.data = data;
@@ -24,6 +24,10 @@ class Table {
 		// console.log(columns);
 
 		this.barchart = barchart;
+
+		this.linechart = linechart;
+
+		this.percentageLinechart = percentageLinechart;
 
 		this.initialSelected = "DeveloperType";
 
@@ -51,7 +55,7 @@ class Table {
 		tr = trenter.merge(tr);
 
 		tr.filter(function(d){
-			console.log(d);
+			// console.log(d);
 			return d === parent.initialSelected;
 		}).classed("selected", true);
 
@@ -120,7 +124,7 @@ class Table {
 
 		this.columnsToDisplay = [];
 
-		for(let i = 0; i < 35 && i < array.length; i++){
+		for(let i = 0; i < 5 && i < array.length; i++){
 			this.columnsToDisplay.push(array[i].name);
 		}
 
@@ -195,6 +199,15 @@ class Table {
 			}
 		})
 		this.barchart.createBarChart(array, this.maxAverage);
+
+		let multiYearArray = [];
+		for(let i = 2014; i <  2018; i++){
+			multiYearArray.push({'year': i, 'data': array});
+		}
+
+		this.linechart.createLineChart(multiYearArray, "average");
+
+		this.percentageLinechart.createLineChart(multiYearArray, "fractionOfTotal")
 
 	}
 
