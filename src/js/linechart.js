@@ -27,8 +27,12 @@ class LineChart{
 		var svg = d3.select(this.htmlId),
 			margin = {top: 20, right: 80, bottom: 30, left: 50},
 			width = svg.attr("width") - margin.left - margin.right,
-			height = svg.attr("height") - margin.top - margin.bottom,
-			g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			height = svg.attr("height") - margin.top - margin.bottom;
+		
+		svg.selectAll("*").remove();
+		let g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		
 
 		var parseTime = d3.timeParse("%Y");
 
@@ -93,8 +97,16 @@ class LineChart{
 			.style("font", "10px sans-serif")
 			.text(function(d) { return d.id; });
 
-
-
-
 	}
 }
+
+
+
+
+
+
+
+
+
+
+

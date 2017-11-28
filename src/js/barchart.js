@@ -21,7 +21,7 @@ class BarChart {
 		d3.select("#bars").selectAll("g").remove();
 
 		let margin = {top: 10, right: 10, bottom: 10, left: 10};
-		let width = 400 - margin.left - margin.right;
+		let width = 600 - margin.left - margin.right;
 		let height = 300 - margin.top - margin.bottom;
 		let spaceForTitles = 300;
 
@@ -71,7 +71,7 @@ class BarChart {
 			.enter()
 			.append("text")
 			.attr('x', d=> xscale(d.average))
-			.attr('dx', -50)
+			.attr('dx', -45)
 			.attr('y', function(d, i){
 				return yscale(d.name); 
 			})
