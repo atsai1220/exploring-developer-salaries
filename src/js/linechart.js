@@ -4,6 +4,7 @@
 class LineChart{
 	constructor(htmlId){
 		this.htmlId = htmlId;
+		console.log(this.htmlId);
 	}
 
 	createLineChart(yearsData, linesAttribute, yAxisText){

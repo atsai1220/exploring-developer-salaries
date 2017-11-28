@@ -17,9 +17,8 @@ class Table {
 	constructor(data, barchart, linechart, percentageLinechart) {
 
 		this.data = data;
-
 		
-		this.columns = Object.keys(data[0]);
+		this.columns = Object.keys(data.survey_public[0]);
 
 		this.barchart = barchart;
 
@@ -81,7 +80,7 @@ class Table {
 		let map = {};
 
 		let totalCount = 0;
-		this.data.forEach(function(d, i){
+		this.data.survey_public.forEach(function(d, i){
 			d[column].split("; ").forEach(function(type){
 				if(type in map){
 					map[type].total = map[type].total + Number(d.Salary);
@@ -195,7 +194,7 @@ class Table {
 			if(parent.columnsToDisplay.indexOf(d.name) >=0){
 				array.push(d);
 			}
-		})
+		});
 		this.barchart.createBarChart(array, this.maxAverage);
 
 		let multiYearArray = [];
