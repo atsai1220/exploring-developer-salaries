@@ -15,13 +15,11 @@ class Table {
 	 */
 
 	constructor(data, barchart, linechart, percentageLinechart) {
-		// console.log(teamData);
 
 		this.data = data;
 
 		
 		this.columns = Object.keys(data[0]);
-		// console.log(columns);
 
 		this.barchart = barchart;
 

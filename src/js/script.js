@@ -8,7 +8,8 @@ d3.csv("data/survey_results_public.csv", function (error, csvData) {
 	let data = [];
 	// console.log(csvData[0]);
 	for(let i =0; i < csvData.length; i++){
-		if(csvData[i].Salary != "NA"){
+		if(csvData[i].Salary != "NA" //){
+			&& csvData[i].Country == "United States"){
 			data.push(csvData[i]);
 		}
 	}
