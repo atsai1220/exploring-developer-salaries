@@ -1,3 +1,6 @@
+/*
+
+ */
 class LineChart{
 	constructor(htmlId){
 		this.htmlId = htmlId;
@@ -14,15 +17,13 @@ class LineChart{
 		yearsData.forEach(function(year){
 			cities.forEach(function(answer){
 				year.data.forEach(function(option){
-					if(option.name == answer.id){
+					if(option.name === answer.id){
 						answer['values'].push({'date': year.year, 'temperature': option[linesAttribute]});
 
 					}
 				})
 			})
-		})
-
-
+		});
 		
 		var svg = d3.select(this.htmlId),
 			margin = {top: 20, right: 80, bottom: 30, left: 50},
