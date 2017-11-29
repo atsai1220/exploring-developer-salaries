@@ -8,10 +8,10 @@ d3.queue()
     .defer(d3.csv, "data/survey_2016.csv")
     .defer(d3.csv, "data/survey_2015.csv")
     .defer(d3.csv, "data/survey_2014.csv")
-    .defer(d3.csv, "data/survey_2013.csv")
+    // .defer(d3.csv, "data/survey_2013.csv")
 	.await(analyze);
 
-function analyze(error, survey_public, survey_2017, survey_2016, survey_2015, survey_2014, survey_2013) {
+function analyze(error, survey_public, survey_2017, survey_2016, survey_2015, survey_2014) {
 	if (error) { console.log(error); }
 
 	let data = initializeDictionary();
@@ -24,39 +24,44 @@ function analyze(error, survey_public, survey_2017, survey_2016, survey_2015, su
     }
 
     for (let i = 0; i < survey_2017.length; i++) {
-	    if (survey_2017[i].Salary !== "NA") {
+	    if (survey_2017[i].Salary !== "NA"
+            && survey_2017[i].Country === "United States") {
 	        data.survey_2017.push(survey_2017[i]);
         }
     }
 
     for (let i = 0; i < survey_2016.length; i++) {
-        if (survey_2016[i].Salary !== "NA") {
+        if (survey_2016[i].Salary !== "NA"
+            && survey_2016[i].Country === "United States") {
             data.survey_2016.push(survey_2016[i]);
         }
     }
 
     for (let i = 0; i < survey_2015.length; i++) {
-        if (survey_2015[i].Salary !== "NA") {
+        if (survey_2015[i].Salary !== "NA"
+            && survey_2015[i].Country === "United States") {
             data.survey_2015.push(survey_2015[i]);
         }
     }
 
     for (let i = 0; i < survey_2014.length; i++) {
-        if (survey_2014[i].Salary !== "NA") {
+        if (survey_2014[i].Salary !== "NA"
+            && survey_2014[i].Country === "United States") {
             data.survey_2014.push(survey_2014[i]);
         }
     }
 
-    for (let i = 0; i < survey_2013.length; i++) {
-        if (survey_2013[i].Salary !== "NA") {
-            data.survey_2013.push(survey_2013[i]);
-        }
-    }
+    // for (let i = 0; i < survey_2013.length; i++) {
+    //     if (survey_2013[i].Salary !== "NA"
+    //         && survey_public[i].Country === "United States") {
+    //         data.survey_2013.push(survey_2013[i]);
+    //     }
+    // }
 
     // console.log(survey_public);
     // console.log(survey_2017);
     // console.log(survey_2016);
-	console.log(survey_2015);
+	// console.log(survey_2015);
 	// console.log(survey_2014);
 	// console.log(survey_2013);
 
@@ -76,7 +81,7 @@ function initializeDictionary() {
     dataDictionary.survey_2016 = [];
     dataDictionary.survey_2015 = [];
     dataDictionary.survey_2014 = [];
-    dataDictionary.survey_2013 = [];
+    // dataDictionary.survey_2013 = [];
     return dataDictionary;
 }
 

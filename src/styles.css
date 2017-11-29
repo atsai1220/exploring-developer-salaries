@@ -12,7 +12,7 @@ table {
     min-width: 125px;
 }*/
 .axis--x path {
-  display: none;
+  /*display: none;*/
 }
 
 .line {

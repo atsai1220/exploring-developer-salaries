@@ -8,6 +8,7 @@ function compare(a,b) {
 	return 0;
 }
 
+
 /** Class implementing the table. */
 class Table {
 	/**
@@ -52,7 +53,6 @@ class Table {
 		tr = trenter.merge(tr);
 
 		tr.filter(function(d){
-			// console.log(d);
 			return d === parent.initialSelected;
 		}).classed("selected", true);
 
@@ -78,7 +78,7 @@ class Table {
 
 	questionSelected(column){
 		let map = {};
-
+        // console.log(column);
 		let totalCount = 0;
 		this.data.survey_public.forEach(function(d, i){
 			d[column].split("; ").forEach(function(type){
@@ -86,7 +86,6 @@ class Table {
 					map[type].total = map[type].total + Number(d.Salary);
 					map[type].count = map[type].count + 1;
 					totalCount += 1;
-					// console.log(number(d.Salary))
 				}else{
 					map[type] = {};
 					map[type].name = type;
@@ -95,17 +94,109 @@ class Table {
 					totalCount += 1;
 				}
 			})
-		})
+		});
+
+		let map_yearly = {};
+		totalCount = 0;
+		map_yearly.survey_2017 = {};
+		map_yearly.survey_2016 = {};
+		map_yearly.survey_2015 = {};
+		map_yearly.survey_2014 = {};
+		this.data.survey_2017.forEach(function(d) {
+            d[column].split("; ").forEach(function(type) {
+                if (type in map_yearly.survey_2017) {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        // console.log(d.Salary);
+                        map_yearly.survey_2017[type].total = map_yearly.survey_2017[type].total + parseInt(d.Salary);
+                        map_yearly.survey_2017[type].count = map_yearly.survey_2017[type].count + 1;
+                        // console.log(map_yearly.survey_2017[type].total);
+                    }
+                } else {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2017[type] = {};
+                        map_yearly.survey_2017[type].name = type;
+                        map_yearly.survey_2017[type].total = parseInt(d.Salary);
+                        map_yearly.survey_2017[type].count = 1;
+                        totalCount += 1;
+                        // console.log(map_yearly.survey_2017[type].total);
+                    }
+                }
+            })
+        });
+
+        totalCount = 0;
+        this.data.survey_2016.forEach(function(d) {
+            d[column].split("; ").forEach(function(type) {
+                    if (type in map_yearly.survey_2016) {
+                        if (Number.isInteger(parseInt(d.Salary))) {
+                            map_yearly.survey_2016[type].total = map_yearly.survey_2016[type].total + parseInt(d.Salary);
+                            map_yearly.survey_2016[type].count += 1;
+                        }
+                } else {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2016[type] = {};
+                        map_yearly.survey_2016[type].name = type;
+                        map_yearly.survey_2016[type].total = parseInt(d.Salary);
+                        map_yearly.survey_2016[type].count = 1;
+                        totalCount += 1;
+                    }
+                }
+            })
+        });
+        totalCount = 0;
+        this.data.survey_2015.forEach(function(d) {
+            d[column].split("; ").forEach(function(type) {
+                if (type in map_yearly.survey_2015) {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2015[type].total += parseInt(d.Salary);
+                        map_yearly.survey_2015[type].count += 1;
+                    }
+                } else {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2015[type] = {};
+                        map_yearly.survey_2015[type].name = type;
+                        map_yearly.survey_2015[type].total = parseInt(d.Salary);
+                        map_yearly.survey_2015[type].count = 1;
+                        totalCount += 1;
+                    }
+                }
+            })
+        });
+        totalCount = 0;
+        this.data.survey_2014.forEach(function(d) {
+            d[column].split("; ").forEach(function(type) {
+                if (type in map_yearly.survey_2014) {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2014[type].total += parseInt(d.Salary);
+                        map_yearly.survey_2014[type].count += 1;
+                    }
+                } else {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2014[type] = {};
+                        map_yearly.survey_2014[type].name = type;
+                        map_yearly.survey_2014[type].total = parseInt(d.Salary);
+                        map_yearly.survey_2014[type].count = 1;
+                        totalCount += 1;
+                    }
+                }
+            })
+        });
+
+        // console.log(map_yearly.survey_2017);
+        // console.log(map_yearly.survey_2016);
+        // console.log(map_yearly.survey_2015);
+        // console.log(map_yearly.survey_2014);
+
+
 		let maxAverage = -1;
 
 		let array = [];
 
-		
-		for (var key in map) {
+		for (let key in map) {
 		// skip loop if the property is from prototype
 			if (!map.hasOwnProperty(key)) continue;
 
-			var obj = map[key];
+			let obj = map[key];
 			obj.average = obj.total/obj.count;
 
 			obj.fractionOfTotal = obj.count/totalCount;
@@ -113,11 +204,83 @@ class Table {
 			array.push(obj);
 			if(obj.average  > maxAverage){
 				maxAverage = obj.average ;
-			} 
-			
+			}
 		}
+        array.sort(compare);
 
-		array.sort(compare);
+
+		let array_2017 = [];
+        for (let key in map_yearly.survey_2017) {
+            // skip loop if the property is from prototype
+            if (!map_yearly.survey_2017.hasOwnProperty(key)) continue;
+
+            let obj = map_yearly.survey_2017[key];
+            obj.average = obj.total/obj.count;
+
+            obj.fractionOfTotal = obj.count/totalCount;
+
+            array_2017.push(obj);
+            if(obj.average  > maxAverage){
+                maxAverage = obj.average ;
+            }
+        }
+        array_2017.sort(compare);
+        this.responseArray_2017 = array_2017;
+
+        let array_2016 = [];
+        for (let key in map_yearly.survey_2016) {
+            // skip loop if the property is from prototype
+            if (!map_yearly.survey_2016.hasOwnProperty(key)) continue;
+
+            let obj = map_yearly.survey_2016[key];
+            obj.average = obj.total/obj.count;
+
+            obj.fractionOfTotal = obj.count/totalCount;
+
+            array_2016.push(obj);
+            if(obj.average  > maxAverage){
+                maxAverage = obj.average ;
+            }
+        }
+        array_2016.sort(compare);
+        this.responseArray_2016 = array_2016;
+
+        let array_2015 = [];
+        for (let key in map_yearly.survey_2015) {
+            // skip loop if the property is from prototype
+            if (!map_yearly.survey_2015.hasOwnProperty(key)) continue;
+
+            let obj = map_yearly.survey_2015[key];
+            obj.average = obj.total/obj.count;
+
+            obj.fractionOfTotal = obj.count/totalCount;
+
+            array_2015.push(obj);
+            if(obj.average  > maxAverage){
+                maxAverage = obj.average ;
+            }
+        }
+        array_2015.sort(compare);
+        this.responseArray_2015 = array_2015;
+
+        let array_2014 = [];
+        for (let key in map_yearly.survey_2014) {
+            // skip loop if the property is from prototype
+            if (!map_yearly.survey_2014.hasOwnProperty(key)) continue;
+
+            let obj = map_yearly.survey_2014[key];
+            obj.average = obj.total/obj.count;
+
+            obj.fractionOfTotal = obj.count/totalCount;
+
+            array_2014.push(obj);
+            if(obj.average  > maxAverage){
+                maxAverage = obj.average ;
+            }
+        }
+        array_2014.sort(compare);
+        this.responseArray_2014 = array_2014;
+
 
 		this.columnsToDisplay = [];
 
@@ -187,6 +350,10 @@ class Table {
 	updateVisualizations(){
 		
 		let array = [];
+		let array_2017 = [];
+        let array_2016 = [];
+        let array_2015 = [];
+        let array_2014 = [];
 
 		let parent = this;
 
@@ -195,16 +362,42 @@ class Table {
 				array.push(d);
 			}
 		});
+
+		this.responseArray_2017.forEach(function(d) {
+		    if (parent.columnsToDisplay.indexOf(d.name) >= 0) {
+		        array_2017.push(d);
+            }
+        });
+
+        this.responseArray_2016.forEach(function(d) {
+            if (parent.columnsToDisplay.indexOf(d.name) >= 0) {
+                array_2016.push(d);
+            }
+        });
+        this.responseArray_2015.forEach(function(d) {
+            if (parent.columnsToDisplay.indexOf(d.name) >= 0) {
+                array_2015.push(d);
+            }
+        });
+        this.responseArray_2014.forEach(function(d) {
+            if (parent.columnsToDisplay.indexOf(d.name) >= 0) {
+                array_2014.push(d);
+            }
+        });
+
 		this.barchart.createBarChart(array, this.maxAverage);
 
+		// console.log(array);
 		let multiYearArray = [];
-		for(let i = 2014; i <  2018; i++){
-			multiYearArray.push({'year': i, 'data': array});
-		}
 
-		this.linechart.createLineChart(multiYearArray, "average", "Average Salary");
+        multiYearArray.push({'year': 2017, 'data': array_2017});
+        multiYearArray.push({'year': 2016, 'data': array_2016});
+        multiYearArray.push({'year': 2015, 'data': array_2015});
+        multiYearArray.push({'year': 2014, 'data': array_2014});
 
-		this.percentageLinechart.createLineChart(multiYearArray, "fractionOfTotal", "Percent of Respondants")
+		this.linechart.createLineChart(array, multiYearArray, "average", "Average Salary");
+
+		this.percentageLinechart.createLineChart(array, multiYearArray, "fractionOfTotal", "Percent of Respondents")
 
 	}
 
