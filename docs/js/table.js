@@ -1,0 +1,428 @@
+
+
+function compare(a,b) {
+	if (a.average > b.average)
+		return -1;
+	if (a.average < b.average)
+		return 1;
+	return 0;
+}
+
+
+/** Class implementing the table. */
+class Table {
+	/**
+	 * Creates a Table Object
+	 */
+
+	constructor(data, barchart, linechart, percentageLinechart) {
+
+		this.data = data;
+		
+		this.columns = Object.keys(data.survey_public[0]);
+
+		this.barchart = barchart;
+
+		this.linechart = linechart;
+
+		this.percentageLinechart = percentageLinechart;
+
+		this.initialSelected = "DeveloperType";
+
+		this.questionSelected(this.initialSelected);
+
+		this.width = 150;
+		this.height = 20;
+
+		this.padding = {
+			left: 3.5,
+			right: 6,
+			top: 5,
+			bottom: 5
+		}
+
+
+		var parent = this;
+
+		let tablebody = d3.select("#QuestionsTable").select("tbody");
+
+		let tr = tablebody.selectAll('tr').data(this.columns);
+
+		let trenter = tr.enter().append("tr");
+
+		tr = trenter.merge(tr);
+
+		tr.filter(function(d){
+			return d === parent.initialSelected;
+		}).classed("selected", true);
+
+		tr.on("click", function(d, i){
+			d3.selectAll(".selected").classed("selected", false);
+			d3.select(this).classed("selected", true);
+			parent.questionSelected(d);
+		});
+
+		let td = tr.selectAll("td").data(function(d){
+			let array = [];
+			array.push(d);
+			return array;
+		});
+
+		let tdenter = td.enter().append("td");
+
+		td = tdenter.merge(td);
+
+		td.text(d=>d);
+
+	}
+
+	questionSelected(column){
+		let map = {};
+        // console.log(column);
+		let totalCount = 0;
+		this.data.survey_public.forEach(function(d, i){
+			d[column].split("; ").forEach(function(type){
+				if(type in map){
+					map[type].total = map[type].total + Number(d.Salary);
+					map[type].count = map[type].count + 1;
+					totalCount += 1;
+				}else{
+					map[type] = {};
+					map[type].name = type;
+					map[type].total = parseInt(d.Salary);
+					map[type].count = 1;
+					totalCount += 1;
+				}
+			})
+		});
+
+		let map_yearly = {};
+		totalCount = 0;
+		map_yearly.survey_2017 = {};
+		map_yearly.survey_2016 = {};
+		map_yearly.survey_2015 = {};
+		map_yearly.survey_2014 = {};
+		this.data.survey_2017.forEach(function(d) {
+            d[column].split("; ").forEach(function(type) {
+                if (type in map_yearly.survey_2017) {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        // console.log(d.Salary);
+                        map_yearly.survey_2017[type].total = map_yearly.survey_2017[type].total + parseInt(d.Salary);
+                        map_yearly.survey_2017[type].count = map_yearly.survey_2017[type].count + 1;
+                        // console.log(map_yearly.survey_2017[type].total);
+                    }
+                } else {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2017[type] = {};
+                        map_yearly.survey_2017[type].name = type;
+                        map_yearly.survey_2017[type].total = parseInt(d.Salary);
+                        map_yearly.survey_2017[type].count = 1;
+                        totalCount += 1;
+                        // console.log(map_yearly.survey_2017[type].total);
+                    }
+                }
+            })
+        });
+
+        totalCount = 0;
+        this.data.survey_2016.forEach(function(d) {
+            d[column].split("; ").forEach(function(type) {
+                    if (type in map_yearly.survey_2016) {
+                        if (Number.isInteger(parseInt(d.Salary))) {
+                            map_yearly.survey_2016[type].total = map_yearly.survey_2016[type].total + parseInt(d.Salary);
+                            map_yearly.survey_2016[type].count += 1;
+                        }
+                } else {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2016[type] = {};
+                        map_yearly.survey_2016[type].name = type;
+                        map_yearly.survey_2016[type].total = parseInt(d.Salary);
+                        map_yearly.survey_2016[type].count = 1;
+                        totalCount += 1;
+                    }
+                }
+            })
+        });
+        totalCount = 0;
+        this.data.survey_2015.forEach(function(d) {
+            d[column].split("; ").forEach(function(type) {
+                if (type in map_yearly.survey_2015) {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2015[type].total += parseInt(d.Salary);
+                        map_yearly.survey_2015[type].count += 1;
+                    }
+                } else {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2015[type] = {};
+                        map_yearly.survey_2015[type].name = type;
+                        map_yearly.survey_2015[type].total = parseInt(d.Salary);
+                        map_yearly.survey_2015[type].count = 1;
+                        totalCount += 1;
+                    }
+                }
+            })
+        });
+        totalCount = 0;
+        this.data.survey_2014.forEach(function(d) {
+            d[column].split("; ").forEach(function(type) {
+                if (type in map_yearly.survey_2014) {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2014[type].total += parseInt(d.Salary);
+                        map_yearly.survey_2014[type].count += 1;
+                    }
+                } else {
+                    if (Number.isInteger(parseInt(d.Salary))) {
+                        map_yearly.survey_2014[type] = {};
+                        map_yearly.survey_2014[type].name = type;
+                        map_yearly.survey_2014[type].total = parseInt(d.Salary);
+                        map_yearly.survey_2014[type].count = 1;
+                        totalCount += 1;
+                    }
+                }
+            })
+        });
+
+        // console.log(map_yearly.survey_2017);
+        // console.log(map_yearly.survey_2016);
+        // console.log(map_yearly.survey_2015);
+        // console.log(map_yearly.survey_2014);
+
+
+		let maxAverage = -1;
+
+		let array = [];
+
+		for (let key in map) {
+		// skip loop if the property is from prototype
+			if (!map.hasOwnProperty(key)) continue;
+
+			let obj = map[key];
+			obj.average = obj.total/obj.count;
+
+			obj.fractionOfTotal = obj.count/totalCount;
+
+			array.push(obj);
+			if(obj.average  > maxAverage){
+				maxAverage = obj.average ;
+			}
+		}
+        array.sort(compare);
+
+
+		let array_2017 = [];
+        for (let key in map_yearly.survey_2017) {
+            // skip loop if the property is from prototype
+            if (!map_yearly.survey_2017.hasOwnProperty(key)) continue;
+
+            let obj = map_yearly.survey_2017[key];
+            obj.average = obj.total/obj.count;
+
+            obj.fractionOfTotal = obj.count/totalCount;
+
+            array_2017.push(obj);
+            if(obj.average  > maxAverage){
+                maxAverage = obj.average ;
+            }
+        }
+        array_2017.sort(compare);
+        this.responseArray_2017 = array_2017;
+
+        let array_2016 = [];
+        for (let key in map_yearly.survey_2016) {
+            // skip loop if the property is from prototype
+            if (!map_yearly.survey_2016.hasOwnProperty(key)) continue;
+
+            let obj = map_yearly.survey_2016[key];
+            obj.average = obj.total/obj.count;
+
+            obj.fractionOfTotal = obj.count/totalCount;
+
+            array_2016.push(obj);
+            if(obj.average  > maxAverage){
+                maxAverage = obj.average ;
+            }
+        }
+        array_2016.sort(compare);
+        this.responseArray_2016 = array_2016;
+
+        let array_2015 = [];
+        for (let key in map_yearly.survey_2015) {
+            // skip loop if the property is from prototype
+            if (!map_yearly.survey_2015.hasOwnProperty(key)) continue;
+
+            let obj = map_yearly.survey_2015[key];
+            obj.average = obj.total/obj.count;
+
+            obj.fractionOfTotal = obj.count/totalCount;
+
+            array_2015.push(obj);
+            if(obj.average  > maxAverage){
+                maxAverage = obj.average ;
+            }
+        }
+        array_2015.sort(compare);
+        this.responseArray_2015 = array_2015;
+
+        let array_2014 = [];
+        for (let key in map_yearly.survey_2014) {
+            // skip loop if the property is from prototype
+            if (!map_yearly.survey_2014.hasOwnProperty(key)) continue;
+
+            let obj = map_yearly.survey_2014[key];
+            obj.average = obj.total/obj.count;
+
+            obj.fractionOfTotal = obj.count/totalCount;
+
+            array_2014.push(obj);
+            if(obj.average  > maxAverage){
+                maxAverage = obj.average ;
+            }
+        }
+        array_2014.sort(compare);
+        this.responseArray_2014 = array_2014;
+
+
+		this.columnsToDisplay = [];
+
+		for(let i = 0; i < 5 && i < array.length; i++){
+			this.columnsToDisplay.push(array[i].name);
+		}
+
+		let tablebody = d3.select("#Responses").select("tbody");
+
+		let tr = tablebody.selectAll('tr').data(array);
+		tr.exit().remove();
+
+		let trenter = tr.enter().append("tr");
+
+		tr = trenter.merge(tr);
+
+
+
+		var parent = this;
+		tr.on("click", function(d, i){
+			// d3.selectAll(".selected").classed("selected", false);
+			let cur = d3.select(this);
+			if(cur.classed("selected")){
+				cur.classed("selected", false);
+				parent.responseDeselected(d.name);
+			}else{
+				cur.classed("selected", true);
+				parent.responseSelected(d.name);
+			}
+			
+		});
+
+		tr.filter(function(d){
+			return parent.columnsToDisplay.indexOf(d.name) >=0;
+		}).classed('selected', true);
+
+		let td = tr.selectAll("td").data(function(d){
+			let array = [];
+			// console.log(d);
+			array.push(d.name);
+			return array;
+		});
+
+		let tdenter = td.enter().append("td");
+
+		td = tdenter.merge(td);
+
+		td.text(d=>d);
+
+		this.responseArray = array;
+		this.maxAverage = maxAverage;
+
+		this.updateVisualizations();
+	}
+
+
+	responseSelected(response){
+		this.columnsToDisplay.push(response);
+		this.updateVisualizations();
+	}
+
+	responseDeselected(response){
+		this.columnsToDisplay.splice(this.columnsToDisplay.indexOf(response), 1);
+		this.updateVisualizations();
+	}
+
+	updateVisualizations(){
+		
+		let array = [];
+		let array_2017 = [];
+        let array_2016 = [];
+        let array_2015 = [];
+        let array_2014 = [];
+
+		let parent = this;
+
+		this.responseArray.forEach(function(d, i){
+			if(parent.columnsToDisplay.indexOf(d.name) >=0){
+				array.push(d);
+			}
+		});
+
+		this.responseArray_2017.forEach(function(d) {
+		    if (parent.columnsToDisplay.indexOf(d.name) >= 0) {
+		        array_2017.push(d);
+            }
+        });
+
+        this.responseArray_2016.forEach(function(d) {
+            if (parent.columnsToDisplay.indexOf(d.name) >= 0) {
+                array_2016.push(d);
+            }
+        });
+        this.responseArray_2015.forEach(function(d) {
+            if (parent.columnsToDisplay.indexOf(d.name) >= 0) {
+                array_2015.push(d);
+            }
+        });
+        this.responseArray_2014.forEach(function(d) {
+            if (parent.columnsToDisplay.indexOf(d.name) >= 0) {
+                array_2014.push(d);
+            }
+        });
+
+		this.barchart.createBarChart(array, this.maxAverage);
+
+		// console.log(array);
+		let multiYearArray = [];
+
+        multiYearArray.push({'year': 2017, 'data': array_2017});
+        multiYearArray.push({'year': 2016, 'data': array_2016});
+        multiYearArray.push({'year': 2015, 'data': array_2015});
+        multiYearArray.push({'year': 2014, 'data': array_2014});
+
+		this.linechart.createLineChart(array, multiYearArray, "average", "Average Salary");
+
+		this.percentageLinechart.createLineChart(array, multiYearArray, "fractionOfTotal", "Percent of Respondents")
+
+	}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
