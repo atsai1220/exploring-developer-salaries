@@ -96,6 +96,9 @@ class Table {
 			})
 		});
 
+		/*
+		Parsing yearly data
+		 */
 		let map_yearly = {};
 		totalCount = 0;
 		map_yearly.survey_2017 = {};
@@ -208,7 +211,9 @@ class Table {
 		}
         array.sort(compare);
 
-
+        /*
+        Taking average salary for each category
+         */
 		let array_2017 = [];
         for (let key in map_yearly.survey_2017) {
             // skip loop if the property is from prototype
@@ -357,18 +362,17 @@ class Table {
 
 		let parent = this;
 
-		this.responseArray.forEach(function(d, i){
+		// Pass selected elements only
+		this.responseArray.forEach(function(d){
 			if(parent.columnsToDisplay.indexOf(d.name) >=0){
 				array.push(d);
 			}
 		});
-
 		this.responseArray_2017.forEach(function(d) {
 		    if (parent.columnsToDisplay.indexOf(d.name) >= 0) {
 		        array_2017.push(d);
             }
         });
-
         this.responseArray_2016.forEach(function(d) {
             if (parent.columnsToDisplay.indexOf(d.name) >= 0) {
                 array_2016.push(d);
@@ -387,7 +391,12 @@ class Table {
 
 		this.barchart.createBarChart(array, this.maxAverage);
 
-		// console.log(array);
+
+		// console.log(array_2017);
+        // console.log(array_2016);
+        // console.log(array_2015);
+        // console.log(array_2014);
+
 		let multiYearArray = [];
 
         multiYearArray.push({'year': 2017, 'data': array_2017});

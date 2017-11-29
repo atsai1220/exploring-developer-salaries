@@ -12,6 +12,9 @@ class LineChart{
 
 	createLineChart(survey_array, yearsData, linesAttribute, yAxisText){
 
+	    /*
+	    only keep jobs that occur in all years and from current selection
+	     */
 		let occupations = [];
         survey_array.forEach(function(d){
             occupations.push({'id': d.name, 'values': []});
@@ -46,6 +49,10 @@ class LineChart{
             })
         });
 
+        // console.log(yearsData[0]);
+        // console.log(yearsData[1]);
+        // console.log(yearsData[2]);
+        // console.log(yearsData[3]);
 		
 		let svg = d3.select(this.htmlId),
 			margin = {top: 20, right: 100, bottom: 30, left: 50},
@@ -91,12 +98,6 @@ class LineChart{
                 return y(d.value);
             });
 
-        // var test = {};
-        // test.year = 1995;
-        // test.value = 5;
-        // console.log(test);
-        // console.log(line(test));
-
 		g.append("g")
 			.attr("class", "axis axis--x")
 			.attr("transform", "translate(0," + height + ")")
@@ -118,6 +119,7 @@ class LineChart{
 			.enter().append("g")
 			.attr("class", "job");
 
+		// TODO: what do we do with entries that exist for 1 year only?
         jobSelection.append("path")
 			.attr("class", "line")
 			.attr("d", function(d) {
@@ -127,6 +129,7 @@ class LineChart{
 			.style("stroke", function(d) { return z(d.id); })
             .style("stroke-width", 2);
 
+        // TODO: add circles for each data point
         jobSelection.append("circle")
             .attr("class", "dot")
             .attr("cx", function(d) {
