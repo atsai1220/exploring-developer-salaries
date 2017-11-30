@@ -17,36 +17,36 @@ function analyze(error, survey_public, survey_2017, survey_2016, survey_2015, su
 	let data = initializeDictionary();
 
 	for (let i = 0; i < survey_public.length; i++) {
-        if (survey_public[i].Salary !== "NA"
-            && survey_public[i].Country === "United States") {
+        if (survey_public[i].Salary !== "NA"){
+            // && survey_public[i].Country === "United States") {
             data.survey_public.push(survey_public[i]);
         }
     }
 
     for (let i = 0; i < survey_2017.length; i++) {
-	    if (survey_2017[i].Salary !== "NA"
-            && survey_2017[i].Country === "United States") {
+	    if (survey_2017[i].Salary !== "NA"){
+            // && survey_2017[i].Country === "United States") {
 	        data.survey_2017.push(survey_2017[i]);
         }
     }
 
     for (let i = 0; i < survey_2016.length; i++) {
-        if (survey_2016[i].Salary !== "NA"
-            && survey_2016[i].Country === "United States") {
+        if (survey_2016[i].Salary !== "NA"){
+            // && survey_2016[i].Country === "United States") {
             data.survey_2016.push(survey_2016[i]);
         }
     }
 
     for (let i = 0; i < survey_2015.length; i++) {
-        if (survey_2015[i].Salary !== "NA"
-            && survey_2015[i].Country === "United States") {
+        if (survey_2015[i].Salary !== "NA"){
+            // && survey_2015[i].Country === "United States") {
             data.survey_2015.push(survey_2015[i]);
         }
     }
 
     for (let i = 0; i < survey_2014.length; i++) {
-        if (survey_2014[i].Salary !== "NA"
-            && survey_2014[i].Country === "United States") {
+        if (survey_2014[i].Salary !== "NA"){
+            // && survey_2014[i].Country === "United States") {
             data.survey_2014.push(survey_2014[i]);
         }
     }
