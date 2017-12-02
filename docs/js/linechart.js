@@ -114,12 +114,12 @@ class LineChart{
 			.attr("fill", "#000")
 			.text(yAxisText);
 
+		// console.log(occupations);
 		let jobSelection = g.selectAll(".job")
 			.data(occupations)
 			.enter().append("g")
 			.attr("class", "job");
 
-		// TODO: what do we do with entries that exist for 1 year only?
         jobSelection.append("path")
 			.attr("class", "line")
 			.attr("d", function(d) {
@@ -129,17 +129,16 @@ class LineChart{
 			.style("stroke", function(d) { return z(d.id); })
             .style("stroke-width", 2);
 
-        // TODO: add circles for each data point
-        jobSelection.append("circle")
-            .attr("class", "dot")
-            .attr("cx", function(d) {
-                // console.log(circle(d.values));
-                // return getX(d.values);
-            })
-            .attr("cy", function(d) {
-                // return getY(d.values);
-            })
-            .attr("r", 3.5);
+        // jobSelection.append("circle")
+        //     .attr("class", "dot")
+        //     .attr("cx", function(d) {
+        //         // console.log(circle(d.values));
+        //         // return getX(d.values);
+        //     })
+        //     .attr("cy", function(d) {
+        //         // return getY(d.values);
+        //     })
+        //     .attr("r", 3.5);
 
         jobSelection.append("text")
 			.datum(function(d) {

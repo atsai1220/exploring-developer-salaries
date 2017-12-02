@@ -8,6 +8,15 @@ function compare(a,b) {
 	return 0;
 }
 
+function sort_name(a, b) {
+    let nameA=a.name.toLowerCase(), nameB=b.name.toLowerCase()
+    if (nameA < nameB) //sort string ascending
+        return -1;
+    if (nameA > nameB)
+        return 1;
+    return 0 //default return value (no sorting)
+}
+
 
 /** Class implementing the table. */
 class Table {
@@ -18,11 +27,19 @@ class Table {
 	constructor(data, barchart, linechart, percentageLinechart) {
 
 		this.data = data;
-		
+
 		this.columns = Object.keys(data.survey_public[0]);
+        //
+		// debugger;
 
-		this.barchart = barchart;
+		this.columns = this.columns.filter(name => {
+		    if (name === "Country" || name === "YearsCodedJob" || name === "DeveloperType"
+            || name === "HaveWorkedLanguage" || name === "Gender" || name === "Salary") {
+		        return name;
+            }
+        });
 
+        this.barchart = barchart;
 		this.linechart = linechart;
 
 		this.percentageLinechart = percentageLinechart;
@@ -30,19 +47,19 @@ class Table {
 		this.initialSelected = "DeveloperType";
 
 		this.questionSelected(this.initialSelected);
-
-		this.width = 150;
-		this.height = 20;
+        //
+		// this.width = 150;
+		// this.height = 20;
 
 		this.padding = {
 			left: 3.5,
 			right: 6,
 			top: 5,
 			bottom: 5
-		}
+		};
+        // Country, YearsCoded, DeveloperType, HaveWorkedLanguage, WantWorkLanguage, Gender, Salary
 
-
-		var parent = this;
+		let parent = this;
 
 		let tablebody = d3.select("#QuestionsTable").select("tbody");
 
@@ -78,20 +95,24 @@ class Table {
 
 	questionSelected(column){
 		let map = {};
-        // console.log(column);
 		let totalCount = 0;
-		this.data.survey_public.forEach(function(d, i){
+		this.data.survey_public.forEach(function(d){
 			d[column].split("; ").forEach(function(type){
+			    // console.log(type);
 				if(type in map){
-					map[type].total = map[type].total + Number(d.Salary);
-					map[type].count = map[type].count + 1;
-					totalCount += 1;
+				    if (Number.isInteger(parseInt(d.Salary))) {
+                        map[type].total = map[type].total + Number(d.Salary);
+                        map[type].count = map[type].count + 1;
+                        totalCount += 1;
+                    }
 				}else{
-					map[type] = {};
-					map[type].name = type;
-					map[type].total = parseInt(d.Salary);
-					map[type].count = 1;
-					totalCount += 1;
+				    if (Number.isInteger(parseInt(d.Salary))) {
+                        map[type] = {};
+                        map[type].name = type;
+                        map[type].total = parseInt(d.Salary);
+                        map[type].count = 1;
+                        totalCount += 1;
+                    }
 				}
 			})
 		});
@@ -209,7 +230,8 @@ class Table {
 				maxAverage = obj.average ;
 			}
 		}
-        array.sort(compare);
+		array.sort(sort_name);
+        // array.sort(compare);
 
         /*
         Taking average salary for each category
@@ -229,7 +251,8 @@ class Table {
                 maxAverage = obj.average ;
             }
         }
-        array_2017.sort(compare);
+        array_2017.sort(sort_name);
+        // array_2017.sort(compare);
         this.responseArray_2017 = array_2017;
 
         let array_2016 = [];
@@ -247,7 +270,8 @@ class Table {
                 maxAverage = obj.average ;
             }
         }
-        array_2016.sort(compare);
+        array_2016.sort(sort_name);
+        // array_2016.sort(compare);
         this.responseArray_2016 = array_2016;
 
         let array_2015 = [];
@@ -265,7 +289,8 @@ class Table {
                 maxAverage = obj.average ;
             }
         }
-        array_2015.sort(compare);
+        array_2015.sort(sort_name);
+        // array_2015.sort(compare);
         this.responseArray_2015 = array_2015;
 
         let array_2014 = [];
@@ -283,8 +308,10 @@ class Table {
                 maxAverage = obj.average ;
             }
         }
-        array_2014.sort(compare);
+        array_2014.sort(sort_name);
+        // array_2014.sort(compare);
         this.responseArray_2014 = array_2014;
+
 
 
 		this.columnsToDisplay = [];
@@ -292,7 +319,7 @@ class Table {
 		for(let i = 0; i < 5 && i < array.length; i++){
 			this.columnsToDisplay.push(array[i].name);
 		}
-
+        // debugger;
 		let tablebody = d3.select("#Responses").select("tbody");
 
 		let tr = tablebody.selectAll('tr').data(array);
@@ -388,7 +415,6 @@ class Table {
                 array_2014.push(d);
             }
         });
-
 		this.barchart.createBarChart(array, this.maxAverage);
 
 
@@ -407,6 +433,7 @@ class Table {
 		this.linechart.createLineChart(array, multiYearArray, "average", "Average Salary");
 
 		this.percentageLinechart.createLineChart(array, multiYearArray, "fractionOfTotal", "Percent of Respondents")
+
 
 	}
 

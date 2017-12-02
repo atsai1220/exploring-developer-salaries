@@ -3,7 +3,7 @@
  *
  */
 d3.queue()
-	.defer(d3.csv, "data/survey_results_public.csv")
+	// .defer(d3.csv, "data/survey_results_public.csv")
 	.defer(d3.csv, "data/survey_2017.csv")
     .defer(d3.csv, "data/survey_2016.csv")
     .defer(d3.csv, "data/survey_2015.csv")
@@ -11,15 +11,15 @@ d3.queue()
     // .defer(d3.csv, "data/survey_2013.csv")
 	.await(analyze);
 
-function analyze(error, survey_public, survey_2017, survey_2016, survey_2015, survey_2014) {
+function analyze(error, survey_2017, survey_2016, survey_2015, survey_2014) {
 	if (error) { console.log(error); }
 
 	let data = initializeDictionary();
 
-	for (let i = 0; i < survey_public.length; i++) {
-        if (survey_public[i].Salary !== "NA"){
+	for (let i = 0; i < survey_2017.length; i++) {
+        if (survey_2017[i].Salary !== "NA"){
             // && survey_public[i].Country === "United States") {
-            data.survey_public.push(survey_public[i]);
+            data.survey_public.push(survey_2017[i]);
         }
     }
 

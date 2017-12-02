@@ -18,11 +18,12 @@ class BarChart {
 	 * @param treeData an array of objects that contain parent/child information.
 	 */
 	createBarChart(array, maxAverage) {
+		console.log(array);
 		d3.select("#bars").selectAll("g").remove();
 
 		let margin = {top: 10, right: 10, bottom: 10, left: 10};
-		let width = 600 - margin.left - margin.right;
-		let height = 300 - margin.top - margin.bottom;
+		let width = 500 - margin.left - margin.right;
+		let height = 450 - margin.top - margin.bottom;
 		let spaceForTitles = 300;
 
 		// append the svg object to the body of the page

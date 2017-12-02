@@ -1,16 +1,11 @@
 
 table {
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 2px;
     font: 14px sans-serif;
     /*width: 720px;*/
 }
 
-/*th {
-    font-weight: normal;
-    
-    padding-right: 6px;
-    min-width: 125px;
-}*/
 .axis--x path {
   /*display: none;*/
 }
@@ -137,18 +132,24 @@ header {
 .selected {
     stroke: #be2714;
     background-color: #be2714;
-    stroke-width: 4px;
+    stroke-width: 2px;
 }
 
 .selectedLabel {
     fill: #be2714;
     font-weight: bolder;
-
 }
 
 .view {
     padding: 0.5em;
     float: left;
+}
+
+.scrollbox {
+    overflow: scroll;
+    height: 200px;
+    width: 400px;
+    border-radius: 10px;
 }
 
 
