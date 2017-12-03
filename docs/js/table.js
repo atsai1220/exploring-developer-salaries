@@ -322,7 +322,6 @@ class Table {
 
 		let tablebody = d3.select("#Responses").select("tbody");
 
-		console.log(array_2014)
 		let tempArray = [];
         /* note : data is the actual object that matched search criteria
   // or undefined if nothing matched */
@@ -339,11 +338,6 @@ class Table {
             let result_2016 = array_2016.find( function( item ) {
                 return item.name === col_name.name;
             });
-            if (col_name.name === "Systems administrator") {
-                // console.log(result_2014);
-                // console.log(result_2015);
-                // console.log(result_2016);
-            }
             if (result_2014 === undefined && result_2015 === undefined && result_2016 === undefined) {
                 // console.log(col_name.name);
             } else {
@@ -352,7 +346,6 @@ class Table {
         }
         array = tempArray;
 
-        // console.log(array);
 
 
 		let tr = tablebody.selectAll('tr').data(array);
