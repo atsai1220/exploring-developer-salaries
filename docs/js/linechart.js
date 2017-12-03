@@ -73,17 +73,24 @@ class LineChart{
 
 		x.domain([2014, 2017]);
 
-		y.domain([
-			d3.min(occupations, function(c) {
-			    return d3.min(c.values, function(d) {
-			        return d.value;
-                }); }),
-			d3.max(occupations, function(c) {
-			    return d3.max(c.values, function(d) {
-			        return d.value;
-                }); })
-		]);
 
+
+		if (yAxisText === "Percent of Respondents") {
+		    y.domain([0,1]);
+        } else {
+            y.domain([
+                d3.min(occupations, function(c) {
+                    return d3.min(c.values, function(d) {
+                        return d.value;
+                    }); }),
+                d3.max(occupations, function(c) {
+                    return d3.max(c.values, function(d) {
+                        return d.value;
+                    }); })
+            ]);
+        }
+
+		// console.log(y.domain);
 		z.domain(occupations.map(function(c) { return c.id; }));
 
 		let line = d3.line()
@@ -109,10 +116,21 @@ class LineChart{
 			.call(d3.axisLeft(y))
 			.append("text")
 			.attr("transform", "rotate(-90)")
-			.attr("y", 6)
+			.attr("y", 5)
 			.attr("dy", "0.71em")
 			.attr("fill", "#000")
 			.text(yAxisText);
+
+        y.domain([
+            d3.min(occupations, function(c) {
+                return d3.min(c.values, function(d) {
+                    return d.value;
+                }); }),
+            d3.max(occupations, function(c) {
+                return d3.max(c.values, function(d) {
+                    return d.value;
+                }); })
+        ]);
 
 		// console.log(occupations);
 		let jobSelection = g.selectAll(".job")
