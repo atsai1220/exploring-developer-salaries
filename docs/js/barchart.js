@@ -22,8 +22,8 @@ class BarChart {
 		d3.select("#bars").selectAll("g").remove();
 
         let mySVG = document.getElementById("bars");
-        mySVG.setAttribute("width",  window.innerWidth/4)
-        let width = window.innerWidth/4;
+        mySVG.setAttribute("width",  window.innerWidth/3);
+        let width = window.innerWidth/3;
 
 		let margin = {top: 10, right: 10, bottom: 10, left: 10};
 		 // let width = 400 - margin.left - margin.right;
