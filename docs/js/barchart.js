@@ -18,11 +18,15 @@ class BarChart {
 	 * @param treeData an array of objects that contain parent/child information.
 	 */
 	createBarChart(array, maxAverage) {
-		console.log(array);
+		// console.log(array);
 		d3.select("#bars").selectAll("g").remove();
 
+        let mySVG = document.getElementById("bars");
+        mySVG.setAttribute("width",  window.innerWidth/4)
+        let width = window.innerWidth/4;
+
 		let margin = {top: 10, right: 10, bottom: 10, left: 10};
-		let width = 500 - margin.left - margin.right;
+		 // let width = 400 - margin.left - margin.right;
 		let height = 450 - margin.top - margin.bottom;
 		let spaceForTitles = 300;
 

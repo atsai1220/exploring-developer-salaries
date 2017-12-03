@@ -34,7 +34,7 @@ class Table {
 
 		this.columns = this.columns.filter(name => {
 		    if (name === "Country" || name === "YearsCodedJob" || name === "DeveloperType"
-            || name === "HaveWorkedLanguage" || name === "Gender" || name === "Salary") {
+            || name === "HaveWorkedLanguage" || name === "Gender") {
 		        return name;
             }
         });
@@ -319,8 +319,42 @@ class Table {
 		for(let i = 0; i < 5 && i < array.length; i++){
 			this.columnsToDisplay.push(array[i].name);
 		}
-        // debugger;
+
 		let tablebody = d3.select("#Responses").select("tbody");
+
+
+		// console.log(array);
+		let tempArray = [];
+        /* note : data is the actual object that matched search criteria
+  // or undefined if nothing matched */
+        for (let i = 0; i < array.length; i++) {
+            let col_name = array[i];
+            // console.log(i);
+            // console.log(col_name.name);
+            let result_2014 = array_2014.find( function( item ) {
+                return item.name === col_name.name;
+            });
+            let result_2015 = array_2015.find( function( item ) {
+                return item.name === col_name.name;
+            });
+            let result_2016 = array_2016.find( function( item ) {
+                return item.name === col_name.name;
+            });
+            if (col_name.name === "Systems administrator") {
+                // console.log(result_2014);
+                // console.log(result_2015);
+                // console.log(result_2016);
+            }
+            if (result_2014 === undefined && result_2015 === undefined && result_2016 === undefined) {
+                // console.log(col_name.name);
+            } else {
+                tempArray.push(col_name);
+            }
+        }
+        array = tempArray;
+
+        // console.log(array);
+
 
 		let tr = tablebody.selectAll('tr').data(array);
 		tr.exit().remove();
@@ -418,7 +452,7 @@ class Table {
 		this.barchart.createBarChart(array, this.maxAverage);
 
 
-		// console.log(array_2017);
+        // console.log(array_2017);
         // console.log(array_2016);
         // console.log(array_2015);
         // console.log(array_2014);
@@ -433,6 +467,12 @@ class Table {
 		this.linechart.createLineChart(array, multiYearArray, "average", "Average Salary");
 
 		this.percentageLinechart.createLineChart(array, multiYearArray, "fractionOfTotal", "Percent of Respondents")
+
+        let mySVG = document.getElementById("salary");
+        mySVG.setAttribute("width",  window.innerWidth/4);
+
+        mySVG = document.getElementById("percentage");
+        mySVG.setAttribute("width",  window.innerWidth/4);
 
 
 	}
