@@ -322,8 +322,7 @@ class Table {
 
 		let tablebody = d3.select("#Responses").select("tbody");
 
-
-		// console.log(array);
+		console.log(array_2014)
 		let tempArray = [];
         /* note : data is the actual object that matched search criteria
   // or undefined if nothing matched */
